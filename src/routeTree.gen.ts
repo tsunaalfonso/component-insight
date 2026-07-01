@@ -9,38 +9,171 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedDiagnosisRouteImport } from './routes/_authenticated/diagnosis'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDiagnosisIndexRouteImport } from './routes/_authenticated/diagnosis.index'
+import { Route as AuthenticatedDiagnosisUploadRouteImport } from './routes/_authenticated/diagnosis.upload'
+import { Route as AuthenticatedDiagnosisCameraRouteImport } from './routes/_authenticated/diagnosis.camera'
+import { Route as AuthenticatedDiagnosisIdRouteImport } from './routes/_authenticated/diagnosis.$id'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDiagnosisRoute = AuthenticatedDiagnosisRouteImport.update({
+  id: '/diagnosis',
+  path: '/diagnosis',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDiagnosisIndexRoute =
+  AuthenticatedDiagnosisIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDiagnosisRoute,
+  } as any)
+const AuthenticatedDiagnosisUploadRoute =
+  AuthenticatedDiagnosisUploadRouteImport.update({
+    id: '/upload',
+    path: '/upload',
+    getParentRoute: () => AuthenticatedDiagnosisRoute,
+  } as any)
+const AuthenticatedDiagnosisCameraRoute =
+  AuthenticatedDiagnosisCameraRouteImport.update({
+    id: '/camera',
+    path: '/camera',
+    getParentRoute: () => AuthenticatedDiagnosisRoute,
+  } as any)
+const AuthenticatedDiagnosisIdRoute =
+  AuthenticatedDiagnosisIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDiagnosisRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/diagnosis': typeof AuthenticatedDiagnosisRouteWithChildren
+  '/diagnosis/$id': typeof AuthenticatedDiagnosisIdRoute
+  '/diagnosis/camera': typeof AuthenticatedDiagnosisCameraRoute
+  '/diagnosis/upload': typeof AuthenticatedDiagnosisUploadRoute
+  '/diagnosis/': typeof AuthenticatedDiagnosisIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/diagnosis/$id': typeof AuthenticatedDiagnosisIdRoute
+  '/diagnosis/camera': typeof AuthenticatedDiagnosisCameraRoute
+  '/diagnosis/upload': typeof AuthenticatedDiagnosisUploadRoute
+  '/diagnosis': typeof AuthenticatedDiagnosisIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/diagnosis': typeof AuthenticatedDiagnosisRouteWithChildren
+  '/_authenticated/diagnosis/$id': typeof AuthenticatedDiagnosisIdRoute
+  '/_authenticated/diagnosis/camera': typeof AuthenticatedDiagnosisCameraRoute
+  '/_authenticated/diagnosis/upload': typeof AuthenticatedDiagnosisUploadRoute
+  '/_authenticated/diagnosis/': typeof AuthenticatedDiagnosisIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/diagnosis'
+    | '/diagnosis/$id'
+    | '/diagnosis/camera'
+    | '/diagnosis/upload'
+    | '/diagnosis/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/diagnosis/$id'
+    | '/diagnosis/camera'
+    | '/diagnosis/upload'
+    | '/diagnosis'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/diagnosis'
+    | '/_authenticated/diagnosis/$id'
+    | '/_authenticated/diagnosis/camera'
+    | '/_authenticated/diagnosis/upload'
+    | '/_authenticated/diagnosis/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +181,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/diagnosis': {
+      id: '/_authenticated/diagnosis'
+      path: '/diagnosis'
+      fullPath: '/diagnosis'
+      preLoaderRoute: typeof AuthenticatedDiagnosisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/diagnosis/': {
+      id: '/_authenticated/diagnosis/'
+      path: '/'
+      fullPath: '/diagnosis/'
+      preLoaderRoute: typeof AuthenticatedDiagnosisIndexRouteImport
+      parentRoute: typeof AuthenticatedDiagnosisRoute
+    }
+    '/_authenticated/diagnosis/upload': {
+      id: '/_authenticated/diagnosis/upload'
+      path: '/upload'
+      fullPath: '/diagnosis/upload'
+      preLoaderRoute: typeof AuthenticatedDiagnosisUploadRouteImport
+      parentRoute: typeof AuthenticatedDiagnosisRoute
+    }
+    '/_authenticated/diagnosis/camera': {
+      id: '/_authenticated/diagnosis/camera'
+      path: '/camera'
+      fullPath: '/diagnosis/camera'
+      preLoaderRoute: typeof AuthenticatedDiagnosisCameraRouteImport
+      parentRoute: typeof AuthenticatedDiagnosisRoute
+    }
+    '/_authenticated/diagnosis/$id': {
+      id: '/_authenticated/diagnosis/$id'
+      path: '/$id'
+      fullPath: '/diagnosis/$id'
+      preLoaderRoute: typeof AuthenticatedDiagnosisIdRouteImport
+      parentRoute: typeof AuthenticatedDiagnosisRoute
+    }
   }
 }
 
+interface AuthenticatedDiagnosisRouteChildren {
+  AuthenticatedDiagnosisIdRoute: typeof AuthenticatedDiagnosisIdRoute
+  AuthenticatedDiagnosisCameraRoute: typeof AuthenticatedDiagnosisCameraRoute
+  AuthenticatedDiagnosisUploadRoute: typeof AuthenticatedDiagnosisUploadRoute
+  AuthenticatedDiagnosisIndexRoute: typeof AuthenticatedDiagnosisIndexRoute
+}
+
+const AuthenticatedDiagnosisRouteChildren: AuthenticatedDiagnosisRouteChildren =
+  {
+    AuthenticatedDiagnosisIdRoute: AuthenticatedDiagnosisIdRoute,
+    AuthenticatedDiagnosisCameraRoute: AuthenticatedDiagnosisCameraRoute,
+    AuthenticatedDiagnosisUploadRoute: AuthenticatedDiagnosisUploadRoute,
+    AuthenticatedDiagnosisIndexRoute: AuthenticatedDiagnosisIndexRoute,
+  }
+
+const AuthenticatedDiagnosisRouteWithChildren =
+  AuthenticatedDiagnosisRoute._addFileChildren(
+    AuthenticatedDiagnosisRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDiagnosisRoute: typeof AuthenticatedDiagnosisRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDiagnosisRoute: AuthenticatedDiagnosisRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

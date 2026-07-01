@@ -14,16 +14,204 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      diagnoses: {
+        Row: {
+          component_name: string | null
+          confidence: number | null
+          created_at: string
+          id: string
+          image_path: string | null
+          image_url: string
+          manufacturer: string | null
+          package_type: string | null
+          possible_cause: string | null
+          raw_analysis: Json | null
+          recommendation: string | null
+          repairability: string | null
+          severity: string | null
+          source: Database["public"]["Enums"]["diagnosis_source"]
+          status: Database["public"]["Enums"]["diagnosis_status"]
+          summary: string | null
+          user_id: string
+          visible_damage: Json | null
+        }
+        Insert: {
+          component_name?: string | null
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          image_path?: string | null
+          image_url: string
+          manufacturer?: string | null
+          package_type?: string | null
+          possible_cause?: string | null
+          raw_analysis?: Json | null
+          recommendation?: string | null
+          repairability?: string | null
+          severity?: string | null
+          source?: Database["public"]["Enums"]["diagnosis_source"]
+          status?: Database["public"]["Enums"]["diagnosis_status"]
+          summary?: string | null
+          user_id: string
+          visible_damage?: Json | null
+        }
+        Update: {
+          component_name?: string | null
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          image_path?: string | null
+          image_url?: string
+          manufacturer?: string | null
+          package_type?: string | null
+          possible_cause?: string | null
+          raw_analysis?: Json | null
+          recommendation?: string | null
+          repairability?: string | null
+          severity?: string | null
+          source?: Database["public"]["Enums"]["diagnosis_source"]
+          status?: Database["public"]["Enums"]["diagnosis_status"]
+          summary?: string | null
+          user_id?: string
+          visible_damage?: Json | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          approved: boolean
+          avatar_url: string | null
+          created_at: string
+          disabled: boolean
+          email: string
+          id: string
+          name: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved?: boolean
+          avatar_url?: string | null
+          created_at?: string
+          disabled?: boolean
+          email: string
+          id: string
+          name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved?: boolean
+          avatar_url?: string | null
+          created_at?: string
+          disabled?: boolean
+          email?: string
+          id?: string
+          name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          diagnosis_id: string
+          id: string
+          pdf_path: string | null
+          pdf_url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          diagnosis_id: string
+          id?: string
+          pdf_path?: string | null
+          pdf_url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          diagnosis_id?: string
+          id?: string
+          pdf_path?: string | null
+          pdf_url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_diagnosis_id_fkey"
+            columns: ["diagnosis_id"]
+            isOneToOne: false
+            referencedRelation: "diagnoses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      system_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      diagnosis_source: "upload" | "camera"
+      diagnosis_status:
+        | "pending"
+        | "healthy"
+        | "defective"
+        | "severe"
+        | "unknown"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +338,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      diagnosis_source: ["upload", "camera"],
+      diagnosis_status: [
+        "pending",
+        "healthy",
+        "defective",
+        "severe",
+        "unknown",
+      ],
+    },
   },
 } as const

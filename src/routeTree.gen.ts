@@ -18,7 +18,6 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
-import { Route as AuthenticatedDiagnosisRouteImport } from './routes/_authenticated/diagnosis'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDiagnosisIndexRouteImport } from './routes/_authenticated/diagnosis.index'
@@ -70,11 +69,6 @@ const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedDiagnosisRoute = AuthenticatedDiagnosisRouteImport.update({
-  id: '/diagnosis',
-  path: '/diagnosis',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -87,27 +81,27 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 } as any)
 const AuthenticatedDiagnosisIndexRoute =
   AuthenticatedDiagnosisIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedDiagnosisRoute,
+    id: '/diagnosis/',
+    path: '/diagnosis/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDiagnosisUploadRoute =
   AuthenticatedDiagnosisUploadRouteImport.update({
-    id: '/upload',
-    path: '/upload',
-    getParentRoute: () => AuthenticatedDiagnosisRoute,
+    id: '/diagnosis/upload',
+    path: '/diagnosis/upload',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDiagnosisCameraRoute =
   AuthenticatedDiagnosisCameraRouteImport.update({
-    id: '/camera',
-    path: '/camera',
-    getParentRoute: () => AuthenticatedDiagnosisRoute,
+    id: '/diagnosis/camera',
+    path: '/diagnosis/camera',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDiagnosisIdRoute =
   AuthenticatedDiagnosisIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedDiagnosisRoute,
+    id: '/diagnosis/$id',
+    path: '/diagnosis/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -117,7 +111,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/diagnosis': typeof AuthenticatedDiagnosisRouteWithChildren
   '/history': typeof AuthenticatedHistoryRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reports': typeof AuthenticatedReportsRoute
@@ -152,7 +145,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/diagnosis': typeof AuthenticatedDiagnosisRouteWithChildren
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
@@ -171,7 +163,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/admin'
     | '/dashboard'
-    | '/diagnosis'
     | '/history'
     | '/profile'
     | '/reports'
@@ -205,7 +196,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
-    | '/_authenticated/diagnosis'
     | '/_authenticated/history'
     | '/_authenticated/profile'
     | '/_authenticated/reports'
@@ -289,13 +279,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistoryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/diagnosis': {
-      id: '/_authenticated/diagnosis'
-      path: '/diagnosis'
-      fullPath: '/diagnosis'
-      preLoaderRoute: typeof AuthenticatedDiagnosisRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -312,73 +295,59 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/diagnosis/': {
       id: '/_authenticated/diagnosis/'
-      path: '/'
+      path: '/diagnosis'
       fullPath: '/diagnosis/'
       preLoaderRoute: typeof AuthenticatedDiagnosisIndexRouteImport
-      parentRoute: typeof AuthenticatedDiagnosisRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/diagnosis/upload': {
       id: '/_authenticated/diagnosis/upload'
-      path: '/upload'
+      path: '/diagnosis/upload'
       fullPath: '/diagnosis/upload'
       preLoaderRoute: typeof AuthenticatedDiagnosisUploadRouteImport
-      parentRoute: typeof AuthenticatedDiagnosisRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/diagnosis/camera': {
       id: '/_authenticated/diagnosis/camera'
-      path: '/camera'
+      path: '/diagnosis/camera'
       fullPath: '/diagnosis/camera'
       preLoaderRoute: typeof AuthenticatedDiagnosisCameraRouteImport
-      parentRoute: typeof AuthenticatedDiagnosisRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/diagnosis/$id': {
       id: '/_authenticated/diagnosis/$id'
-      path: '/$id'
+      path: '/diagnosis/$id'
       fullPath: '/diagnosis/$id'
       preLoaderRoute: typeof AuthenticatedDiagnosisIdRouteImport
-      parentRoute: typeof AuthenticatedDiagnosisRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AuthenticatedDiagnosisRouteChildren {
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedDiagnosisIdRoute: typeof AuthenticatedDiagnosisIdRoute
   AuthenticatedDiagnosisCameraRoute: typeof AuthenticatedDiagnosisCameraRoute
   AuthenticatedDiagnosisUploadRoute: typeof AuthenticatedDiagnosisUploadRoute
   AuthenticatedDiagnosisIndexRoute: typeof AuthenticatedDiagnosisIndexRoute
 }
 
-const AuthenticatedDiagnosisRouteChildren: AuthenticatedDiagnosisRouteChildren =
-  {
-    AuthenticatedDiagnosisIdRoute: AuthenticatedDiagnosisIdRoute,
-    AuthenticatedDiagnosisCameraRoute: AuthenticatedDiagnosisCameraRoute,
-    AuthenticatedDiagnosisUploadRoute: AuthenticatedDiagnosisUploadRoute,
-    AuthenticatedDiagnosisIndexRoute: AuthenticatedDiagnosisIndexRoute,
-  }
-
-const AuthenticatedDiagnosisRouteWithChildren =
-  AuthenticatedDiagnosisRoute._addFileChildren(
-    AuthenticatedDiagnosisRouteChildren,
-  )
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedDiagnosisRoute: typeof AuthenticatedDiagnosisRouteWithChildren
-  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
-  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
-  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
-  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
-}
-
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedDiagnosisRoute: AuthenticatedDiagnosisRouteWithChildren,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedDiagnosisIdRoute: AuthenticatedDiagnosisIdRoute,
+  AuthenticatedDiagnosisCameraRoute: AuthenticatedDiagnosisCameraRoute,
+  AuthenticatedDiagnosisUploadRoute: AuthenticatedDiagnosisUploadRoute,
+  AuthenticatedDiagnosisIndexRoute: AuthenticatedDiagnosisIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

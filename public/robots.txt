@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /dashboard
+Disallow: /diagnosis
+Disallow: /history
+Disallow: /reports
+Disallow: /profile
+Disallow: /settings
+Disallow: /admin
